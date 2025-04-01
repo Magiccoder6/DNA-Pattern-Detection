@@ -15,7 +15,6 @@ def test_sequence():
 
     dna_sequence = text_value
     dfa = DNA(dna_sequence)
-    result = dfa.analyze()
-    print(result)
+    result, found = dfa.analyze()
     
-    return jsonify({"result": "result", "found": True})
+    return jsonify({"result": result, "found": found})
