@@ -1,6 +1,12 @@
+"""
+Author: Shemar Edwards
+Email: shemaredwards1990@gmail.com
+Date: April 3, 2025
+Description: This script implements a DFA for DNA pattern detection.
+"""
 class DNA:
     def __init__(self, sequence):
-        self.sequence = sequence.upper() + "ε"  # Ensure uppercase for consistency
+        self.sequence = sequence.upper().strip() + "ε" #Add marker to end of sequence
         self.current_state = "Q0"
         self.start_codon_final_state = "Q3"
         self.cancer_final_state = "Q18"
@@ -10,10 +16,12 @@ class DNA:
             'Q0': {'Q1':'A', 'DS0': ['T', 'G', 'C','ε']},
             'Q1': {'Q2':'T', 'DS0': ['A', 'G', 'C','ε']},
             'Q2': {'Q3':['G','ε'], 'DS0': ['A', 'T', 'C','ε']},
-            'DS0': {'DS0': ['A','T', 'G', 'C','ε']},
             'Q3': {'Q3':['A','T','ε'], 'Q4':'C', 'Q6':'G'},
             'Q4': {'Q4':'C', 'Q5':'A', 'Q3':['T','ε'], 'Q6':'G'},
             'Q5': {'Q9':'G','Q3':['T','A','C','ε']},
+            'Q6': {'Q4':'C','Q7':'G','Q3':['T','A','ε']},
+            'Q7': {'Q4':'C','Q7':'G','Q8':'T','Q3':['A','ε']},
+            'Q8': {'Q4':'C','Q16':'G','Q3':['T','A','ε']},
             'Q9': {'Q7':'G','Q10':'C','Q3':['T','A','ε']},
             'Q10': {'Q11':'A','Q3':['T','G','C','ε']},
             'Q11': {'Q12':'G','Q3':['T','A','C','ε']},
@@ -21,14 +29,13 @@ class DNA:
             'Q13': {'Q14':'A','Q7':'G','Q3':['T','C','ε']},
             'Q14': {'Q15':'G','Q3':['T','A','C','ε']},
             'Q15': {'Q15':'A','Q15':'T','Q15':'G','Q15':'C','Q15':'ε'},
-            'Q6': {'Q4':'C','Q7':'G','Q3':['T','A','ε']},
-            'Q7': {'Q4':'C','Q7':'G','Q8':'T','Q3':['A','ε']},
-            'Q8': {'Q4':'C','Q16':'G','Q3':['T','A','ε']},
             'Q16': {'Q4':'C','Q17':'A','Q3':['T','G','ε']},
             'Q17': {'Q4':'C','Q18':'T','Q3':['A','G','ε']},
-            'Q18': {'Q18':'A','Q18':'T','Q18':'G','Q18':'C','Q18':'ε'}
+            'Q18': {'Q18':'A','Q18':'T','Q18':'G','Q18':'C','Q18':'ε'},
+            'DS0': {'DS0': ['A','T', 'G', 'C','ε']}
         }
     
+    # Function to process input sequence
     def _process_sequence(self, transitions):
         for char in self.sequence:
             dict = transitions[self.current_state]
@@ -42,10 +49,9 @@ class DNA:
             if(next_state):
                 self.current_state = next_state
 
-    
+    # Function to conditionally check the current state after processing
     def analyze(self):
         self._process_sequence(self.transitions)
-        print(self.current_state)
 
         if(self.current_state == self.cancer_final_state):
             return "Possible cancer mutation (GGTGAT) found.", True
