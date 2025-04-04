@@ -6,7 +6,7 @@ Description: This script implements a DFA for DNA pattern detection.
 """
 class DNA:
     def __init__(self, sequence):
-        self.sequence = sequence.upper().strip() + "ε" #Add marker to end of sequence
+        self.sequence = sequence.strip() + "ε" #Add marker to end of sequence
         self.current_state = "Q0"
         self.start_codon_final_state = "Q3"
         self.cancer_final_state = "Q18"
