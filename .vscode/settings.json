@@ -1,0 +1,5 @@
+{
+    "appService.showBuildDuringDeployPrompt": false,
+    "appService.defaultWebAppToDeploy": "/subscriptions/63b3e5e2-1c9e-4e1f-9ffa-5b0d14998411/resourceGroups/DNA-Detection_group/providers/Microsoft.Web/sites/DNA-Detection",
+    "appService.deploySubpath": "src"
+}
